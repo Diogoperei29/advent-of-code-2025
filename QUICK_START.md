@@ -1,5 +1,13 @@
 # Quick Guide: Compile and Run a Single Day
 
+## Initial Setup (First Time Only)
+
+Initialize the git submodule for the chrym library:
+
+```bash
+git submodule update --init --recursive
+```
+
 ## Method 1: Using Root CMake (Recommended)
 
 From the project root:
@@ -33,9 +41,11 @@ cmake --build build
 ## Tips
 
 - **Input files**: Place your puzzle input in `input.txt` and test input in `test_input.txt`
-- **Testing**: Uncomment the test_input.txt line in solve.cpp to test first
+  - These files are ignored by git to keep your inputs private
+- **Testing**: Pass a custom input file path as an argument: `day3.exe path/to/test_input.txt`
 - **Running from day folder**: Always run the executable from the day's folder (1/, 2/, etc.) so it can find input.txt
-- **Benchmarks**: The executable automatically runs benchmarks after showing results
+- **Timing**: Each run automatically shows execution time in milliseconds
+- **chrym library**: Use `chrym::read_lines()` for input, `chrym::time_call()` for timing, and other utilities
 
 ## Example Workflow
 
@@ -45,7 +55,9 @@ cd 3
 # Edit input.txt with your puzzle input
 
 # 2. Edit solve.cpp with your solution
-# Edit solve.cpp
+# Implement part1() and/or part2()
+# Uncomment: return std::to_string(result);
+# Remove: return "Not implemented";
 
 # 3. Build and run
 cd ..
@@ -53,4 +65,9 @@ cmake -S . -B build -DAOC_DAY=3
 cmake --build build
 cd 3
 ..\build\bin\Debug\day3.exe
+
+# Output shows:
+# === Advent of Code 2025 - Day 3 ===
+# Part 1: 12345 (1.23 ms)
+# Part 2: 67890 (2.45 ms)
 ```

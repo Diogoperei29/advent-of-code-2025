@@ -20,27 +20,16 @@ else()
     )
 endif()
 
+# Add external library (chrym.hpp)
+include_directories(external/advent-of-code-cpp-library/include)
+
 # Option to build specific day
 set(AOC_DAY "ALL" CACHE STRING "Which day to build (1-12 or ALL)")
-
-# Google Benchmark
-include(FetchContent)
-set(BENCHMARK_ENABLE_TESTING OFF)
-set(BENCHMARK_ENABLE_INSTALL OFF)
-set(BENCHMARK_ENABLE_GTEST_TESTS OFF)
-
-FetchContent_Declare(
-    benchmark
-    GIT_REPOSITORY https://github.com/google/benchmark.git
-    GIT_TAG v1.8.3
-)
-FetchContent_MakeAvailable(benchmark)
 
 # Function to add a day's solution
 function(add_day DAY_NUM)
     set(TARGET_NAME day${DAY_NUM})
     add_executable(${TARGET_NAME} ${DAY_NUM}/solve.cpp)
-    target_link_libraries(${TARGET_NAME} PRIVATE benchmark::benchmark)
     set_target_properties(${TARGET_NAME} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     )
@@ -58,8 +47,8 @@ else()
 endif()
 
 # Build solver_all executable
-add_executable(solver_all solver_all.cpp)
-target_link_libraries(solver_all PRIVATE benchmark::benchmark)
+file(GLOB DAY_SOURCES "*/solve.cpp")
+add_executable(solver_all solver_all.cpp ${DAY_SOURCES})
 set_target_properties(solver_all PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )

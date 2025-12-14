@@ -1,0 +1,3 @@
+[submodule "external/advent-of-code-cpp-library"]
+	path = external/advent-of-code-cpp-library
+	url = https://github.com/Diogoperei29/advent-of-code-cpp-library

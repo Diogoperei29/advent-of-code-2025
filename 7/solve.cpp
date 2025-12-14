@@ -1,73 +1,46 @@
-#include <benchmark/benchmark.h>
+#include "chrym.hpp"
 #include <iostream>
-#include <string>
-#include <sstream>
-#include <fstream>
 
 class Day7 {
 private:
-    std::string readFile(const std::string& filename) {
-        std::ifstream file(filename);
-        if (!file.is_open()) {
-            return "";
-        }
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        return buffer.str();
-    }
+    std::vector<std::string> lines;
 
 public:
+    Day7(std::string_view path) {
+        lines = chrym::read_lines(path, false);
+    }
+
     std::string part1() {
-        std::string input = readFile("input.txt");
-        // std::string input = readFile("test_input.txt"); // Use for testing
-        
         // TODO: Implement part 1 solution
-        // For numeric results: return std::to_string(result);
+        int result = 0;
+        // return std::to_string(result);
         return "Not implemented";
     }
 
     std::string part2() {
-        std::string input = readFile("input.txt");
-        // std::string input = readFile("test_input.txt"); // Use for testing
-        
         // TODO: Implement part 2 solution
-        // For numeric results: return std::to_string(result);
+        int result = 0;
+        // return std::to_string(result);
         return "Not implemented";
     }
 };
 
-// Benchmark for Part 1
-static void BM_Day7_Part1(benchmark::State& state) {
-    Day7 solver;
-    for (auto _ : state) {
-        benchmark::DoNotOptimize(solver.part1());
-    }
-}
-BENCHMARK(BM_Day7_Part1);
-
-// Benchmark for Part 2
-static void BM_Day7_Part2(benchmark::State& state) {
-    Day7 solver;
-    for (auto _ : state) {
-        benchmark::DoNotOptimize(solver.part2());
-    }
-}
-BENCHMARK(BM_Day7_Part2);
-
+#ifndef AOC_SOLVER_ALL
 int main(int argc, char** argv) {
-    Day7 solver;
-    
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    std::string input_path = (argc > 1) ? argv[1] : "7/input.txt";
+
+    Day7 solver(input_path);
+
+    auto [t1, ans1] = chrym::time_call([&]() { return solver.part1(); });
+    auto [t2, ans2] = chrym::time_call([&]() { return solver.part2(); });
+
     std::cout << "=== Advent of Code 2025 - Day 7 ===" << std::endl;
-    std::cout << "Part 1: " << solver.part1() << std::endl;
-    std::cout << "Part 2: " << solver.part2() << std::endl;
-    std::cout << std::endl;
-    
-    // Run benchmarks
-    benchmark::Initialize(&argc, argv);
-    if (benchmark::ReportUnrecognizedArguments(argc, argv)) {
-        return 1;
-    }
-    benchmark::RunSpecifiedBenchmarks();
-    
+    std::cout << "Part 1: " << ans1 << " (" << t1 << " ms)" << std::endl;
+    std::cout << "Part 2: " << ans2 << " (" << t2 << " ms)" << std::endl;
+
     return 0;
 }
+#endif
