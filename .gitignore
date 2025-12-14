@@ -29,8 +29,8 @@ _deps/
 *.vcxproj.user
 
 # Puzzle inputs (keep empty files in repo, but ignore content changes)
-# */input.txt
-# */test_input.txt
+*/input.txt
+*/test_input.txt
 
 # IDE specific
 .idea/
