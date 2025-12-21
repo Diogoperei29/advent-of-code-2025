@@ -24,23 +24,3 @@ public:
         return "Not implemented";
     }
 };
-
-#ifndef AOC_SOLVER_ALL
-int main(int argc, char** argv) {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-
-    std::string input_path = (argc > 1) ? argv[1] : "5/input.txt";
-
-    Day5 solver(input_path);
-
-    auto [t1, ans1] = chrym::time_call([&]() { return solver.part1(); });
-    auto [t2, ans2] = chrym::time_call([&]() { return solver.part2(); });
-
-    std::cout << "=== Advent of Code 2025 - Day 5 ===" << std::endl;
-    std::cout << "Part 1: " << ans1 << " (" << t1 << " ms)" << std::endl;
-    std::cout << "Part 2: " << ans2 << " (" << t2 << " ms)" << std::endl;
-
-    return 0;
-}
-#endif

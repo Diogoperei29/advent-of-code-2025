@@ -1,28 +1,26 @@
 # Advent of Code 2025
 
 My personal solutions to the 2025 Advent of Code coding challenges, in C++.
+(Some base code was build using AI to save on time, but all solutions were done without any AI assistance)
 
 ## Project Structure
 
 ```
 advent-of-code-2025/
 ├── CMakeLists.txt          # Root CMake configuration
-├── solver_all.cpp          # Run all days at once
+├── main.cpp                # Interactive solver (run single day or all)
 ├── external/
 │   └── advent-of-code-cpp-library/  # chrym.hpp utility library (git submodule)
 ├── 1/
-│   ├── CMakeLists.txt      # Day 1 CMake (can be used standalone)
 │   ├── solve.cpp           # Day 1 solution
 │   ├── input.txt           # Your puzzle input (ignored by git)
 │   └── test_input.txt      # Example input (ignored by git)
 ├── 2/
-│   ├── CMakeLists.txt
 │   ├── solve.cpp
 │   ├── input.txt
 │   └── test_input.txt
 ...
 └── 12/
-    ├── CMakeLists.txt
     ├── solve.cpp
     ├── input.txt
     └── test_input.txt
@@ -34,7 +32,7 @@ advent-of-code-2025/
 - CMake 3.20 or higher
 - Git (for cloning submodules)
 
-## Building
+## Quick Start
 
 ### Initial Setup
 
@@ -48,73 +46,60 @@ git clone --recursive <repository-url>
 git submodule update --init --recursive
 ```
 
-### Build All Days
-
-To build all 12 days at once:
+### Build
 
 ```bash
-# Create build directory
+# Create build directory and configure
 mkdir build
 cd build
-
-# Configure and build
 cmake ..
+
+# Build the solver
 cmake --build .
 ```
 
-### Build Specific Day
-
-To build only a specific day (e.g., day 3):
-
-```bash
-# From project root
-mkdir build
-cd build
-
-# Configure with specific day
-cmake .. -DAOC_DAY=3
-
-# Build
-cmake --build .
-```
-
-### Build Individual Day (Standalone)
-
-You can also build each day independently without using the root CMake:
-
-```bash
-# Navigate to specific day
-cd 3
-
-# Create build directory
-mkdir build
-cd build
-
-# Configure and build
-cmake ..
-cmake --build .
-```
+This creates a single executable `aoc2025.exe` that can run any day or all days.
 
 ## Running Solutions
 
-After building, run from the day's folder so it finds `input.txt`:
+### Interactive Mode
+
+Run the executable without arguments to get prompted:
 
 ```bash
-# Run day 1
-cd 1
-..\build\bin\Debug\day1.exe
+.\aoc2025.exe
+
+# Output:
+# Advent of Code 2025 Solver
+# Enter day (1-12 or 'all'): 5
+# Enter input type ('input' or 'test'): test
 ```
+
+### Command Line Mode
+
+Pass the day number and input type as arguments:
+
+```bash
+# Run a specific day with test input
+.\aoc2025.exe 5 test
+
+# Run a specific day with real input
+.\aoc2025.exe 5 input
+
+# Run all days with test input
+.\aoc2025.exe all test
+
+# Run all days with real input
+.\aoc2025.exe all input
+```
+
+Input type options:
+- `test` - uses `test_input.txt`
+- `input` - uses `input.txt` -- also default if no type provided
 
 ## Solution Template
 
-Each day's `solve.cpp` file contains:
-
-- **DayN Class**: A class with `part1()` and `part2()` methods returning `std::string`
-- **chrym::read_lines()**: Helper from chrym.hpp to read input files
-- **chrym::time_call()**: Simple timing utility that measures execution time
-- **main()**: Prints solutions with timing (wrapped in `#ifndef AOC_SOLVER_ALL`)
-
-Example:
+Each day's `solve.cpp` file follows this structure:
 
 ```cpp
 #include "chrym.hpp"
@@ -143,84 +128,36 @@ public:
         return "Not implemented";
     }
 };
-
-#ifndef AOC_SOLVER_ALL
-int main(int argc, char** argv) {
-    std::string input_path = (argc > 1) ? argv[1] : "1/input.txt";
-    Day1 solver(input_path);
-
-    auto [t1, ans1] = chrym::time_call([&]() { return solver.part1(); });
-    auto [t2, ans2] = chrym::time_call([&]() { return solver.part2(); });
-
-    std::cout << "=== Advent of Code 2025 - Day 1 ===" << std::endl;
-    std::cout << "Part 1: " << ans1 << " (" << t1 << " ms)" << std::endl;
-    std::cout << "Part 2: " << ans2 << " (" << t2 << " ms)" << std::endl;
-
-    return 0;
-}
-#endif
 ```
+
+**Key Points:**
+- Each day is a class (`Day1`, `Day2`, etc.) with `part1()` and `part2()` methods
+- Both methods must return a `std::string` with the answer
+- The constructor takes a file path and loads the input
+- `#ifndef AOC_SOLVER_ALL` is used to prevent duplicate main() functions
 
 ## Adding Your Solution
 
-1. Paste your puzzle input into `input.txt` in the day's folder
-2. Open `solve.cpp` and implement `part1()` and/or `part2()`:
-   - Write your solution logic
-   - Store the result in the `result` variable
-   - Uncomment `return std::to_string(result);`
-   - Remove the `return "Not implemented";` line
-3. Build and run
+1. Paste your puzzle input into `N/input.txt` (where N is the day number)
+2. Open `N/solve.cpp` and implement the solution in `part1()` and/or `part2()`
+3. Return the result as a string: `return std::to_string(result);`
+4. Build and run: `.\aoc2025.exe N`
 
 The `chrym::read_lines()` function loads the input file into a vector of strings (one per line).
 
-## Timing and Output
+## Timing and Benchmarking
 
-Each solution automatically displays:
+All solutions are automatically benchmarked using `chrym::time_call()`. Each run displays:
 - Answer for Part 1 and Part 2
-- Execution time in milliseconds using `chrym::time_call()`
+- Execution time in milliseconds for each part
+- Total time when running all days
 
-Example output:
-```
-=== Advent of Code 2025 - Day 1 ===
-Part 1: 12345 (1.23 ms)
-Part 2: 67890 (2.45 ms)
-```
+## Compiler Settings
 
-## Compiler Warnings
+The project uses strict compiler warnings treated as errors:
 
-The project is configured with strict compiler warnings treated as errors:
-
-- **GCC/Clang**: `-Wall -Wextra -Wpedantic -Werror -Wshadow -Wunused`
+- **GCC/Clang**: `-Wall -Wextra -Wpedantic -Werror -Wshadow -Wno-unused-variable`
 - **MSVC**: `/W4 /WX`
-
-## Run All Days
-
-`solver_all.exe` runs all 12 days sequentially and displays total execution time:
-
-```bash
-# Build and run all solutions at once
-.\build\bin\Debug\solver_all.exe
-```
-
-Output example:
-```
-╔═══════════════════════════════════════╗
-║   Advent of Code 2025 - All Days      ║
-╚═══════════════════════════════════════╝
-
-=== Day  1 ===
-  Part 1: 12345 (1.23 ms)
-  Part 2: 67890 (2.45 ms)
-
-=== Day  2 ===
-  Part 1: 54321 (3.21 ms)
-  Part 2: 98765 (4.56 ms)
-
-...
-
-═══════════════════════════════════════
-Total time: 123 ms
-```
 
 ## chrym.hpp Library
 
@@ -232,3 +169,7 @@ The project uses [chrym.hpp](https://github.com/Diogoperei29/advent-of-code-cpp-
 - **Common algorithms**: Grid operations, pathfinding helpers, etc.
 
 See the [library documentation](https://github.com/Diogoperei29/advent-of-code-cpp-library) for full API reference.
+
+## License
+
+This is personal code for Advent of Code challenges. Feel free to use as reference.

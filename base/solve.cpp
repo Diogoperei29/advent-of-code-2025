@@ -1,12 +1,12 @@
 #include "chrym.hpp"
 #include <iostream>
 
-class Day4 {
+class Day999 {
 private:
     std::vector<std::string> lines;
 
 public:
-    Day4(std::string_view path) {
+    Day999(std::string_view path) {
         lines = chrym::read_lines(path, false);
     }
 

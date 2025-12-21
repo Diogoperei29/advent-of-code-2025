@@ -28,9 +28,10 @@ _deps/
 *.vcxproj.filters
 *.vcxproj.user
 
-# Puzzle inputs (keep empty files in repo, but ignore content changes)
-*/input.txt
-*/test_input.txt
+# Puzzle inputs
+# Ignore all input and test_input files anywhere in the tree
+**/input.txt
+**/test_input.txt
 
 # IDE specific
 .idea/
