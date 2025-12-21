@@ -123,7 +123,7 @@ int main(int argc, char** argv) {
     // check arguments 
     if (argc > 1) {
         dayInput = argv[1];
-        inputType = (argc > 2) ? argv[2] : "test_input";
+        inputType = (argc > 2) ? argv[2] : "input";
     } else {
         std::cout << "Advent of Code 2025 Solver" << std::endl;
         std::cout << "Enter day (1-12 or 'all'): ";
