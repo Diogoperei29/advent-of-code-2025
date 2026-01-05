@@ -133,7 +133,8 @@ int main(int argc, char** argv) {
         std::getline(std::cin, inputType);
     }
     
-    std::transform(inputType.begin(), inputType.end(), inputType.begin(), ::tolower);
+    std::transform(inputType.begin(), inputType.end(), inputType.begin(), 
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
     if (inputType == "test") {
         inputType = "test_input";
     } 
@@ -142,7 +143,8 @@ int main(int argc, char** argv) {
     }
     
     // Convert day input to lowercase and trim
-    std::transform(dayInput.begin(), dayInput.end(), dayInput.begin(), ::tolower);
+    std::transform(dayInput.begin(), dayInput.end(), dayInput.begin(), 
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
     dayInput.erase(0, dayInput.find_first_not_of(" \t\n\r"));
     dayInput.erase(dayInput.find_last_not_of(" \t\n\r") + 1);
     

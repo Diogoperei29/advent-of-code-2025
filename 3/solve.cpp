@@ -61,7 +61,7 @@ public:
                         max_id = bank[pos];
                     }
                 }  
-                max_val +=  pow(10, TARGET_LENGTH - ch - 1) * max_id ;
+                max_val +=  static_cast<int64_t>(pow(10, TARGET_LENGTH - ch - 1)) * max_id ;
                 curr_pos = max_pos + 1;
             }
             result += max_val;
